@@ -36,20 +36,22 @@ app.post("/sign-up", (req, res) => {
     return
   } else {
     profiles.push({ username, avatar });
-    res.status(200).send("OK");
+    res.status(201).send("OK");
     return
   }
 });
-app.post("/tweets", () => {
-  
 
+app.post("/tweets", (req, res) => {
+  const { username, tweet } = req.body;
 
+  const userAuthorized = profiles.find(profile => profile.username === username);
+  if (!userAuthorized) {
+    res.status(401).send("UNAUTHORIZED");
+    return;
+  }
 
-
-
-
-
-
-})
+  tweets.push({ username, tweet });
+  res.status(201).send("OK");
+});
 
 app.listen(PORT, () => console.log(`Server online port ${PORT}.`));
